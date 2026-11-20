@@ -31,7 +31,10 @@ except ImportError:
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-import ds4art as art
+try:
+    import ds4art as art
+except ImportError:
+    art = None
 
 # ---------------------------------------------------------------- pad discovery
 
@@ -810,8 +813,21 @@ def main():
     if '--list' in sys.argv:
         list_mode()
         return 0
-    if evdev is None:
-        print('python-evdev is required:  sudo dnf install python3-evdev')
+    missing = [pkg for pkg, mod in (('python3-evdev', evdev),
+                                    ('python3-cairo', art)) if mod is None]
+    if missing:
+        # Show it in a window too, since the menu entry has no terminal.
+        msg = ('DS4 Tester needs ' + ' and '.join(missing) +
+               '.\n\nOn Fedora:  sudo dnf install ' + ' '.join(missing) +
+               '\nOther distros: see the README.')
+        print(msg, flush=True)
+        try:
+            from tkinter import messagebox
+            root = tk.Tk()
+            root.withdraw()
+            messagebox.showerror('DS4 Tester', msg)
+        except tk.TclError:
+            pass
         return 1
     app = Tester()
     app.mainloop()

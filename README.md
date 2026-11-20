@@ -13,8 +13,20 @@ Using a clone over Bluetooth that won't reconnect? You probably need
 
 ## Install
 
+It needs Python 3 with evdev, pycairo and Tkinter. Install them for your distro:
+
 ```bash
-sudo dnf install -y python3-evdev python3-cairo python3-tkinter
+sudo dnf install python3-evdev python3-cairo python3-tkinter   # Fedora
+sudo apt install python3-evdev python3-cairo python3-tk        # Debian, Ubuntu, Mint
+sudo pacman -S python-evdev python-cairo tk                    # Arch
+```
+
+If one goes missing later (a distro upgrade can do that), the app tells you
+which one when you open it.
+
+Then:
+
+```bash
 git clone https://github.com/the-chadley/ds4-tester.git
 cd ds4-tester
 ./install-user.sh
