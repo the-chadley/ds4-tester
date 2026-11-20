@@ -1,0 +1,10 @@
+# User service that puts a pad's saved lightbar colour back when it
+# connects. udev starts it from 70-ds4-tester.rules. install-user.sh sets
+# it up.
+
+[Unit]
+Description=Restore DS4 lightbar colour (%i)
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/ds4-lightbar-restore %i
